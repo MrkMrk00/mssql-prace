@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+[[ -z "$DOCKER_OPTS" ]] && DOCKER_OPTS="-it"
+
+if [[ ! $(docker ps -q --filter name=mssql) ]]; then
+	docker compose up -d
+	sleep 5
+fi
+
+docker exec $DOCKER_OPTS mssql				\
+	/opt/mssql-tools/bin/sqlcmd		\
+	-S localhost -U sa -P "Strongpassword7" $@
+
